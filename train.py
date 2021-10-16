@@ -31,7 +31,7 @@ parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
 # Training
 parser.add_argument('-t', '--train', dest='evaluate', action='store_true',
                     help='train the model. When evaluate is true, training is ignored and trained models are loaded.')
-parser.add_argument('--epochs', default=300, type=int, metavar='N',
+parser.add_argument('--epochs', default=3, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--train-batch', default=128, type=int, metavar='N',
                     help='train batchsize')
