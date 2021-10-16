@@ -368,15 +368,19 @@ def test(testloader, model, criterion, epoch, use_cuda, evaluation = False):
         bar.next()
     bar.finish()
     if epoch >= args.pretrain:
-    	# sort the abstention results according to their reservations, from high to low
-    	abstention_results.sort(key = lambda x: x[0], reverse=True)
-    	# get the "correct or not" list for the sorted results
-    	sorted_correct = list(map(lambda x: int(x[1]), abstention_results))
-    	size = len(testloader)
-    	print('accracy of coverage ',end='')
-    	for coverage in expected_coverage:
-    	    print('{:.0f}: {:.3f}, '.format(coverage, sum(sorted_correct[int(size/100*coverage):])),end='')
-    	print('')
+        # sort the abstention results according to their reservations, from high to low
+        abstention_results.sort(key = lambda x: x[0], reverse=True)
+        # get the "correct or not" list for the sorted results
+        sorted_correct = list(map(lambda x: int(x[1]), abstention_results))
+        size = len(testloader)
+        print('accuracy of coverage ', end='')
+        for coverage in expected_coverage:
+            print("coverage", coverage)
+            print("size", size)
+            print("sorted_correct:", sorted_correct)
+            print("abstention_results" ,abstention_results)
+            print('{:.0f}: {:.3f}, '.format(coverage, sum(sorted_correct[int(size/100*coverage):])), end='')
+        print('')
     return (losses.avg, top1.avg)
 
 def adjust_learning_rate(optimizer, epoch):
