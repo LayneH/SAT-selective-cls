@@ -82,6 +82,7 @@ reward_list = args.rewards
 # Use CUDA
 os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_id
 use_cuda = torch.cuda.is_available()
+print("Use cuda", use_cuda)
 
 # Random seed
 if args.manualSeed is None:
@@ -375,10 +376,10 @@ def test(testloader, model, criterion, epoch, use_cuda, evaluation = False):
         size = len(testloader)
         print('accuracy of coverage ', end='')
         for coverage in expected_coverage:
-            print("coverage", coverage)
-            print("size", size)
-            print("sorted_correct:", sorted_correct)
-            print("abstention_results" ,abstention_results)
+            #print("coverage", coverage)
+            #print("size", size)
+            #print("sorted_correct:", sorted_correct)
+            #print("abstention_results" ,abstention_results)
             print('{:.0f}: {:.3f}, '.format(coverage, sum(sorted_correct[int(size/100*coverage):])), end='')
         print('')
     return (losses.avg, top1.avg)
@@ -590,7 +591,8 @@ if __name__ == '__main__':
                 args.pretrain = 50
             elif args.dataset == 'catsdogs':
                 args.pretrain = 50
-        
+
+        #args.evaluate = True
         main()
         
     

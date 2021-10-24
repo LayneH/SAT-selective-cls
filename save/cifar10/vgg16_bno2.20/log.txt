@@ -1,0 +1,2 @@
+Epoch	Learning Rate	Train Loss	Test Loss	Train Err.	Test Err.	
+1.000000	0.100000	2.586256	1.886481	82.124000	71.930000	

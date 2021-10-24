@@ -2,7 +2,7 @@ ARCH=vgg16_bn
 LOSS=sat
 DATASET=cifar10
 SAVE_DIR='./log/'${DATASET}_${ARCH}_${LOSS}_$1
-GPU_ID=1
+GPU_ID=0
 
 mkdir -p ./log
 
