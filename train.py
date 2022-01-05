@@ -179,7 +179,7 @@ def main():
 
 
     title = args.dataset + '-' + args.arch + ' o={:.2f}'.format(reward)
-    logger = Logger(os.path.join(save_path, 'log.txt'), title=title)
+    logger = Logger(os.path.join(save_path, 'eval.txt' if args.evaluate else 'log.txt'), title=title)
     logger.set_names(['Epoch', 'Learning Rate', 'Train Loss', 'Test Loss', 'Train Err.', 'Test Err.'])
 
     # if only for evaluation, the training part will not be executed
@@ -328,7 +328,7 @@ def test(testloader, model, criterion, epoch, use_cuda, evaluation = False):
                 if args.loss == 'gambler':
                     loss = criterion(outputs, targets, reward)
                 elif args.loss == 'sat':
-                    loss = criterion(outputs, targets, indices)
+                    loss = F.cross_entropy(outputs[:, :-1], targets)
                 else:
                     loss = criterion(outputs, targets)
                 outputs = F.softmax(outputs, dim=1)
@@ -369,14 +369,14 @@ def test(testloader, model, criterion, epoch, use_cuda, evaluation = False):
     bar.finish()
     if epoch >= args.pretrain:
     	# sort the abstention results according to their reservations, from high to low
-    	abstention_results.sort(key = lambda x: x[0], reverse=True)
-    	# get the "correct or not" list for the sorted results
-    	sorted_correct = list(map(lambda x: int(x[1]), abstention_results))
-    	size = len(testloader)
-    	print('accracy of coverage ',end='')
-    	for coverage in expected_coverage:
-    	    print('{:.0f}: {:.3f}, '.format(coverage, sum(sorted_correct[int(size/100*coverage):])),end='')
-    	print('')
+        abstention_results.sort(key = lambda x: x[0], reverse=True)
+        # get the "correct or not" list for the sorted results
+        sorted_correct = list(map(lambda x: int(x[1]), abstention_results))
+        size = len(testloader)
+        print('accracy of coverage ',end='')
+        for coverage in expected_coverage:
+            print('{:.0f}: {:.3f}, '.format(coverage, sum(sorted_correct[int(size/100*coverage):])),end='')
+        print('')
     return (losses.avg, top1.avg)
 
 def adjust_learning_rate(optimizer, epoch):
@@ -588,6 +588,3 @@ if __name__ == '__main__':
                 args.pretrain = 50
         
         main()
-        
-    
-
